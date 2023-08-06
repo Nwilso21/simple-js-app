@@ -6,7 +6,9 @@ let pokemonList = [
 ];
 
 for(i =0; i< pokemonList.length; i++){
-    document.write(pokemonList[i].Name);
-    document.write(pokemonList[i].Height);
-    document.write(pokemonList[i].Type);
+    document.write(pokemonList[i].Name + ' (' + pokemonList[i].Height + ')');
+    if(pokemonList[i].Height>1.0){
+        document.write(' - Wow that is big!');
+    }
+    document.write("\n");
 }
