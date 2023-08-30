@@ -33,7 +33,7 @@ let pokemonRepository = (function () {
 
     function showDetails(pokemon){
       loadDetails(pokemon).then(function(){
-        console.log(pokemon);
+        showModal(pokemon.name, 'Height: ' +pokemon.height, pokemon.imageUrl);
       });
     }
 
@@ -66,13 +66,64 @@ let pokemonRepository = (function () {
       })
     }
 
+    
+
+    function showModal(title, text, img) {
+      let modalContainer = document.querySelector('#modal-container');
+    
+      // Clear all existing modal content
+      modalContainer.innerHTML = '';
+
+    let modal = document.createElement('div');
+    modal.classList.add('modal');
+
+    let closeButtonElement = document.createElement('button');
+    closeButtonElement.classList.add('modal-close');
+    closeButtonElement.innerText = 'x';
+    closeButtonElement.addEventListener('click', hideModal);
+
+    let titleElement = document.createElement('h1');
+    titleElement.innerText = title;
+
+    let contentElement=document.createElement('p');
+    contentElement.innerText = text;
+
+    let myimage = document.createElement('img');
+    myimage.src=img;
+
+
+    modal.appendChild(closeButtonElement);
+    modal.appendChild(titleElement);
+    modal.appendChild(contentElement);
+    modalContainer.appendChild(myimage);
+    modalContainer.appendChild(modal);
+
+    modalContainer.classList.add('is-visible');
+  }
+
+  function hideModal(){
+    let modalContainer=document.querySelector('#modal-container');
+    modalContainer.classList.remove('is-visible');
+  }
+
+
+  window.addEventListener('keydown', (e) =>{
+    let modalContainer =document.querySelector('#modal-container');
+    if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')){
+      hideModal();
+    }
+  });
+
+
 
     return {
       add: add,
       getAll: getAll,
       addListItem : addListItem,
       loadlist : loadlist,
-      loadDetails : loadDetails
+      loadDetails : loadDetails,
+      showModal : showModal,
+      hideModal : hideModal
     };
   })();
 
@@ -82,4 +133,9 @@ let pokemonRepository = (function () {
       pokemonRepository.addListItem(pokemon);
     });
   });
+
+
+
+
+
 

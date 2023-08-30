@@ -14,3 +14,36 @@
     color: black;
     border: 2px solid #4caf39;
 }
+
+#modal-container {
+    display: none;
+  }
+  
+  #modal-container.is-visible {
+    position: fixed;
+    box-sizing: border-box;
+    top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: aqua;
+    padding: 16px 32px;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: .4s;
+    cursor: pointer;
+  
+    /* to show it above other content */
+    z-index: 999; 
+  
+    /* to allow scrolling if the screen is not high enough*/
+    overflow: auto; 
+  
+    /* this is used to center the modal */
+    display: grid;
+    text-align: center;
+
+  }
