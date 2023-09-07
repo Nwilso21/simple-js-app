@@ -4,14 +4,7 @@ let pokemonRepository = (function () {
     let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
   
     function add(pokemon) {
-      if(
-        typeof pokemon === "object" &&
-        "name" in pokemon 
-      ){
-        pokemonList.push(pokemon);
-      }else{
-        console.log("pokemon is not correct");
-      }
+      pokemonList.push(pokemon)
     }
   
     function getAll() {
@@ -19,11 +12,13 @@ let pokemonRepository = (function () {
     }
 
     function addListItem(pokemon){
-      let pokemonList =document.querySelector('.pokemon-list');
+      let pokemonList =document.querySelector('.list-group');
       let listItem = document.createElement('li');
-      let button = document.createElement("button");
-      button.innerText = pokemon.name;
-      button.classList.add("button-class");
+      let button = document.createElement("btn");
+      button.setAttribute('data-toggle','modal');
+      button.setAttribute('data-target', '#exampleModal');
+      button.innerText=pokemon.name;
+      button.classList.add("btn","btn-block");
       listItem.appendChild(button);
       pokemonList.appendChild(listItem);
       button.addEventListener("click", function(event) {
@@ -33,7 +28,7 @@ let pokemonRepository = (function () {
 
     function showDetails(pokemon){
       loadDetails(pokemon).then(function(){
-        showModal(pokemon.name, 'Height: ' +pokemon.height, pokemon.imageUrl);
+        showModal(pokemon);
       });
     }
 
@@ -60,6 +55,7 @@ let pokemonRepository = (function () {
       }).then(function (details) {
         item.imageUrl = details.sprites.front_default;
         item.height = details.height;
+        item.weight = details.weight;
         item.types = details.types;
       }).catch(function (e) {
         console.error(e);
@@ -68,47 +64,33 @@ let pokemonRepository = (function () {
 
     
 
-    function showModal(title, text, img) {
-      let modalContainer = document.querySelector('#modal-container');
-    
-      // Clear all existing modal content
-      modalContainer.innerHTML = '';
+    function showModal(item) {
+      let modalBody = $(".modal-body");
+      let modalTitle = $(".modal-title");
+      modalTitle.empty();
+      modalBody.empty();
+        let nameElement = $("<h1>" + item.name + "</h1>");
+      let imageElement = $('<img class="modal-img" style="width:50%">');
+      imageElement.attr("src", item.imageUrl);
+      let heightElement = $("<p>" + "height : " + item.height + "</p>");
+      let weightElement = $("<p>" + "weight : " + item.weight + "</p>");
+      let typesElement = $(`<p>Type(s): ${item.types.map(Types).join(', ')}</p>`);
+      function Types (item){
+        console.log(item.type.name)
+        return [item.type.name];
+      }
+  
+      modalTitle.append(nameElement);
+      modalBody.append(imageElement);
+      modalBody.append(heightElement);
+      modalBody.append(weightElement);
+      modalBody.append(typesElement);
+    }
 
-    let modal = document.createElement('div');
-    modal.classList.add('modal');
-
-    let closeButtonElement = document.createElement('button');
-    closeButtonElement.classList.add('modal-close');
-    closeButtonElement.innerText = 'x';
-    closeButtonElement.addEventListener('click', hideModal);
-
-    let titleElement = document.createElement('h1');
-    titleElement.innerText = title;
-
-    let contentElement=document.createElement('p');
-    contentElement.innerText = text;
-
-    let myimage = document.createElement('img');
-    myimage.src=img;
-
-
-    modal.appendChild(closeButtonElement);
-    modal.appendChild(titleElement);
-    modal.appendChild(contentElement);
-    modalContainer.appendChild(myimage);
-    modalContainer.appendChild(modal);
-
-    modalContainer.classList.add('is-visible');
-  }
-
-  function hideModal(){
-    let modalContainer=document.querySelector('#modal-container');
-    modalContainer.classList.remove('is-visible');
-  }
 
 
   window.addEventListener('keydown', (e) =>{
-    let modalContainer =document.querySelector('#modal-container');
+    let modalContainer =document.querySelector('#modal');
     if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')){
       hideModal();
     }
@@ -122,8 +104,7 @@ let pokemonRepository = (function () {
       addListItem : addListItem,
       loadlist : loadlist,
       loadDetails : loadDetails,
-      showModal : showModal,
-      hideModal : hideModal
+      showModal : showModal
     };
   })();
 
