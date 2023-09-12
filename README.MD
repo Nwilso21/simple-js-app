@@ -1,0 +1,1 @@
+This app will take in a list of Pokemon through an API that will then be incorporated into a displayed list of modals providing all relevant information for the listed pokemon as well as an image to go along with it. Used HTML, CSS, Javascript, and Bootstrap.
